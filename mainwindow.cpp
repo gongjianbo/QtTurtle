@@ -17,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     drawPainter.setPenColor(QColor(0,255,170));
     drawPainter.lineTo(QPointF(300,300));
     drawPainter.setPenWidth(5);
-    drawPainter.lineTo(QPointF(400,50));
+    drawPainter.arc(QPointF(300,200),100,-90,180);
+    drawPainter.moveTo(QPointF(300,100));
     drawPainter.setPenColor(QColor(255,0,170));
     drawPainter.lineTo(QPointF(100,100));
     drawPainter.endFill();

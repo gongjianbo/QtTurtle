@@ -102,6 +102,20 @@ private:
     int len=0;
 };
 
+//圆弧元素,type=101
+class ArcElement : public AbstractElement
+{
+public:
+    explicit ArcElement(const QRectF &rect, int startAngle, int spanAngle);
+    //绘制
+    void draw(QPainter *painter,float progress) override;
 
+    int length() const override { return len; }
+private:
+    QRectF elementRect;
+    int startAngle=0;
+    int spanAngle=0;
+    int len=0;
+};
 
 #endif // MYELEMENT_H

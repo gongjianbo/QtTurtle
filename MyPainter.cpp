@@ -1,5 +1,6 @@
 #include "MyPainter.h"
 
+#include <QtMath>
 #include <QDebug>
 
 MyPainter::MyPainter(QObject *parent) : QObject(parent)
@@ -123,11 +124,24 @@ void MyPainter::moveTo(const QPointF &pos)
 void MyPainter::lineTo(const QPointF &pos)
 {
     if(fillBeginElement){
-        //fillBeginPath.moveTo(currentPos);
         fillBeginPath.lineTo(pos);
     }
     LineElement *ele=new LineElement(QLineF(currentPos,pos));
     dataList.push_back(ele);
     dataLength+=ele->length();
     currentPos=pos;
+}
+
+void MyPainter::arc(const QPointF &center, int radius, int startAngle, int spanAngle)
+{
+    QRectF ele_rect=QRectF(center.x()-radius,center.y()-radius,
+                           radius*2,radius*2);
+    if(fillBeginElement){
+        //const int len=std::ceil(std::abs(spanAngle)*M_PI*radius/180.0);
+        fillBeginPath.arcTo(ele_rect,startAngle,spanAngle);
+    }
+    ArcElement *ele=new ArcElement(ele_rect,startAngle,spanAngle);
+    dataList.push_back(ele);
+    dataLength+=ele->length();
+    //currentPos=stop;
 }

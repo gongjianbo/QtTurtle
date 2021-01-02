@@ -44,6 +44,9 @@ public:
     void moveTo(const QPointF &pos);
     //直线
     void lineTo(const QPointF &pos);
+    //圆弧,span=[0,360],目前只有一个旋转方向
+    //目前圆弧的绘制是独立的，没有记录currentPos
+    void arc(const QPointF &center, int radius, int startAngle, int spanAngle);
 
 signals:
     //请求刷新
