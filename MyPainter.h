@@ -63,6 +63,7 @@ private:
     QPointF currentPos;
     //记录绘制进度
     qint64 drawLength=0;
+    bool drawEnd=false;
     //记录起始时间
     QTime startTime;
     //ms步进值

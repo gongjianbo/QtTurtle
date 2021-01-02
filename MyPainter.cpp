@@ -11,7 +11,7 @@ MyPainter::MyPainter(QObject *parent) : QObject(parent)
         update();
 
         //时长超过表示线条绘制完了
-        if(drawLength>=dataLength)
+        if(drawEnd)
             timer->stop();
     });
 }
@@ -28,8 +28,10 @@ void MyPainter::draw(QPaintDevice *device)
         return;
     QPainter painter(device);
 
+    //目前没有设置路径填充规则 TODO
     qint64 progress_temp=0;
-    for(int i=0;i<dataList.count()&&progress_temp<drawLength;i++)
+    int i=0;
+    for(i=0;i<dataList.count()&&progress_temp<drawLength;i++)
     {
         double len=drawLength-progress_temp;
         AbstractElement* item=dataList[i];
@@ -56,6 +58,7 @@ void MyPainter::draw(QPaintDevice *device)
             break;
         progress_temp+=item->length();
     }
+    drawEnd=bool(i>=dataList.count()&&progress_temp>=dataLength);
 }
 
 void MyPainter::start()
@@ -63,6 +66,7 @@ void MyPainter::start()
     timer->start(timerInterval);
     drawLength=0;
     drawEndIndex=-1;
+    drawEnd=false;
     startTime=QTime::currentTime();
 }
 
