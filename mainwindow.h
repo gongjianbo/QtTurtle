@@ -23,6 +23,6 @@ protected:
 private:
     Ui::MainWindow *ui;
 
-    MyPainter myPainter;
+    MyPainter drawPainter;
 };
 #endif // MAINWINDOW_H

@@ -1,33 +1,66 @@
 #include "MyElement.h"
 
+#include <QDebug>
 
-MyElement::MyElement(const QVariant &data, MyElement::Type type)
-    : data(data),type(type)
+PenColorElement::PenColorElement(const QColor &color)
+    : AbstractElement(1),elementColor(color)
 {
-    switch (type) {
-    case Type::Line:
-        len=data.toLineF().length();
-        break;
-    case Type::Arc:
-        break;
-    default:
-        break;
-    }
 }
 
-void MyElement::draw(QPainter *painter, float progress)
+void PenColorElement::draw(QPainter *painter, float )
 {
-    switch (type) {
-    case Type::Line:
-    {
-        QLineF line=data.toLineF();
-        line.setP2(line.pointAt(progress));
-        painter->drawLine(line);
-    }
-        break;
-    case Type::Arc:
-        break;
-    default:
-        break;
-    }
+    QPen pen=painter->pen();
+    pen.setColor(elementColor);
+    painter->setPen(pen);
 }
+
+PenWidthElement::PenWidthElement(int width)
+    : AbstractElement(2),elementWidth(width)
+{
+}
+
+void PenWidthElement::draw(QPainter *painter, float )
+{
+    QPen pen=painter->pen();
+    pen.setWidth(elementWidth);
+    painter->setPen(pen);
+}
+
+BeginFillElement::BeginFillElement(int index, const QColor &color)
+    : AbstractElement(3),elementIndex(index),elementColor(color)
+{
+}
+
+void BeginFillElement::draw(QPainter *painter, float )
+{
+    painter->fillPath(elementPath,elementColor);
+}
+
+void BeginFillElement::setFillPath(const QPainterPath &path)
+{
+    elementPath=path;
+}
+
+EndFillElement::EndFillElement(int index)
+    : AbstractElement(4),elementIndex(index)
+{
+}
+
+void EndFillElement::draw(QPainter *, float )
+{
+
+}
+
+LineElement::LineElement(const QLineF &line)
+    : AbstractElement(100),elementLine(line)
+{
+    len=line.length();
+}
+
+void LineElement::draw(QPainter *painter, float progress)
+{
+    QLineF line=elementLine;
+    line.setP2(line.pointAt(progress));
+    painter->drawLine(line);
+}
+

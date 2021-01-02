@@ -21,6 +21,7 @@ class MyPainter : public QObject
     Q_OBJECT
 public:
     explicit MyPainter(QObject *parent = nullptr);
+    ~MyPainter();
 
     //在paintEvent中调用，参数参照QPainter，可以直接填widget的this
     void draw(QPaintDevice *device);
@@ -32,6 +33,15 @@ public:
     //绘制结束
     void end();
 
+    //画笔颜色
+    void setPenColor(const QColor &color);
+    //画笔宽度
+    void setPenWidth(int width);
+    //填充颜色
+    void beginFill(const QColor &color);
+    void endFill();
+    //移动画笔
+    void moveTo(const QPointF &pos);
     //直线
     void lineTo(const QPointF &pos);
 
@@ -56,7 +66,12 @@ private:
     //double pxPerMs=0.1;
 
     //数据链
-    QList<MyElement> dataList;
+    QList<AbstractElement*> dataList;
+    //路径
+    BeginFillElement *fillBeginElement=nullptr;
+    QPainterPath fillBeginPath;
+    int fillBeginIndex=0;
+    int drawEndIndex=-1;
     //数据总长度
     qint64 dataLength=0;
 };
